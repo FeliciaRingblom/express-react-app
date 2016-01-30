@@ -1,0 +1,6 @@
+public
+node_modules
+bower_components
+coverage
+server/server.js
+gulpfile.js
