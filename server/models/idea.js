@@ -1,15 +1,11 @@
 var mongoose 	= require('mongoose');
-var Schema = mongoose.Schema;
+var Schema  = mongoose.Schema;
 
-const IdeaSchema = new Schema({
-  ideaId: { type: String, unique: true, index: true },
-  header: String,
-  desc: String,
-  location: String,
-  creator: String,
-  points: Number,
-  added: { type: Date, default: Date.now },
-  labels: [String]
+var IdeaSchema = new Schema ({
+   header		: String,
+   desc 		: String,
+   location	: String,
+   creator	: String
 });
 
 module.exports = mongoose.model('Idea', IdeaSchema);

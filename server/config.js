@@ -1,3 +1,3 @@
 module.exports = {
-  dbUrl: 'mongodb://felri:banan123@ds035573.mongolab.com:35573/shareideas_db'
+  dbUrl: 'mongodb://shareideas:banan123@ds055505.mongolab.com:55505/shareideas'
 };
