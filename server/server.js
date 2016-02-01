@@ -29,14 +29,16 @@ app.use(morgan('dev'));
 
 var apiRouter = express.Router();
 
-apiRouter.route('/ideas')						// on routes that end in /ideas
+apiRouter.route('/ideas')
 
 		.post(function(req, res){
-			var idea = new Idea();					// create a new instance of the idea model
-			idea.header 	= req.body.header;		// set the idea information (comes from the request)
-		    idea.desc  		= req.body.desc;
-		    idea.creator	= req.body.creator;
+			var idea = new Idea();
+		    idea.header = req.body.header;
+	      idea.desc = req.body.desc;
+		    idea.creator = req.body.creator;
 		    idea.location	= req.body.location;
+        idea.points	= req.body.points;
+        idea.labels	= req.body.labels;
 
 		    idea.save(function(err) {
 		    	if (err){
@@ -46,7 +48,7 @@ apiRouter.route('/ideas')						// on routes that end in /ideas
 		    });
 		})
 
-		.get(function(req, res){					// get all ideas in the database
+		.get(function(req, res){
 			Idea.find(function(err, ideas){
 				if (err){
 					res.send(err);
@@ -55,26 +57,28 @@ apiRouter.route('/ideas')						// on routes that end in /ideas
 			});
 		});
 
-	apiRouter.route('/ideas/:idea_id')								// on routes that end in /ideas/:idea_id
-		.get(function(req, res){									// get the idea with that id
+	apiRouter.route('/ideas/:idea_id')
+		.get(function(req, res){
 			Idea.findById(req.params.idea_id, function(err, idea){
 				if (err){
 					res.send(err);
 				}
-				res.json(idea);										//return that idea
+				res.json(idea);
 			});
 		})
 
-		.put(function(req, res){									//update the idea with this id
+		.put(function(req, res){
 			Idea.findById(req.params.idea_id, function(err, idea){
 				if (err){
 					res.send(err);
 				}
 
-				if(req.body.header) idea.header 	= req.body.header;	//update the idea header if it's new
-				if(req.body.desc) idea.desc 		= req.body.desc;	//update the idea desc if it's new
-				if(req.body.creator) idea.creator 	= req.body.creator;	//update the idea creator if it's new
-				if(req.body.location) idea.location = req.body.location;	//update the idea creator if it's new
+				if(req.body.header) idea.header = req.body.header;
+				if(req.body.desc) idea.desc = req.body.desc;
+				if(req.body.creator) idea.creator = req.body.creator;
+				if(req.body.location) idea.location = req.body.location;
+        if(req.body.points) idea.creator = req.body.points;
+				if(req.body.labels) idea.location = req.body.labels;
 
 				idea.save(function(err){
 					if (err){
@@ -85,7 +89,7 @@ apiRouter.route('/ideas')						// on routes that end in /ideas
 			});
 		})
 
-		.delete(function(req, res){									//delete the idea with this id
+		.delete(function(req, res){
 			Idea.remove({
 				_id: req.params.idea_id
 			}, function(err, idea){
