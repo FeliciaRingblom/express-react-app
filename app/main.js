@@ -1,16 +1,32 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import IdeaItem from './components/idea/ideaItem';
+import IdeaList from './components/idea/ideaList';
 
-const idea = {
-  header: 'Idea-heading',
+const ideas = [{
+  header: 'Idea-heading 1',
   desc: 'Idea description...',
   location: 'Home',
   points: 0,
   creator: 'Me',
-  added: '2016-02-02'
-};
+  added: '2016-02-02',
+  id: 0
+}, {
+  header: 'Idea-heading 2',
+  desc: 'Idea description...',
+  location: 'Home',
+  points: 0,
+  creator: 'Me',
+  added: '2016-02-02',
+  id: 1
+}, {
+  header: 'Idea-heading 3',
+  desc: 'Idea description...',
+  location: 'Home',
+  points: 0,
+  creator: 'Me',
+  added: '2016-02-02',
+  id: 2
+},
+];
 
-console.log(idea);
-
-ReactDOM.render(<IdeaItem idea={ idea } />, document.getElementById('app'));
+ReactDOM.render(<IdeaList ideas={ ideas } />, document.getElementById('app'));
