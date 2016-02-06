@@ -8,7 +8,7 @@ const Ideaidea = (props) => {
       <p>{ props.idea.location }</p>
       <p>{ props.idea.points }</p>
       <p>{ props.idea.creator }</p>
-      <p>{ props.idea.added }</p>
+      <p>{ props.idea.created }</p>
     </div>
   );
 };
