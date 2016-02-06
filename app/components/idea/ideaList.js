@@ -1,26 +1,26 @@
 import React from 'react';
-import IdeaItem from './ideaItem';
-import IdeaStore from '../../stores/ideaStore';
-import IdeaActions from '../../actions/ideaActions';
+import IdeaListItem from './ideaListItem';
+import IdeaListStore from '../../stores/ideaListStore';
+import IdeaListActions from '../../actions/ideaListActions';
 
 class IdeaList extends React.Component {
   constructor(props) {
     super(props);
-    this.state = IdeaStore.getState();
+    this.state = IdeaListStore.getState();
     this.onChange = this.onChange.bind(this);
   }
   componentDidMount() {
-    IdeaStore.listen(this.onChange);
-    IdeaActions.getIdeas(this.props.params);
+    IdeaListStore.listen(this.onChange);
+    IdeaListActions.getIdeas(this.props.params);
   }
   componentDidUpdate(prevProps) {
     if (!Object.is(prevProps.params, this.props.params)) {
-      IdeaActions.getIdeas(this.props.params);
+      IdeaListActions.getIdeas(this.props.params);
     }
   }
 
    componentWillUnmount() {
-     IdeaStore.unlisten(this.onChange);
+     IdeaListStore.unlisten(this.onChange);
    }
 
    onChange(state) {
@@ -29,10 +29,10 @@ class IdeaList extends React.Component {
 
   render() {
     const ideaItems = this.state.ideas.map( idea => {
-      return <IdeaItem key={ idea._id } idea={ idea } />;
+      return <IdeaListItem key={ idea._id } idea={ idea } />;
     });
     return (
-      <div className="row">
+      <div>
         { ideaItems }
       </div>
     );

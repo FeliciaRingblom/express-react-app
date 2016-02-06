@@ -1,7 +1,7 @@
 import alt from '../alt';
 import $ from 'jquery';
 
-class IdeaActions {
+class IdeaListActions {
   constructor() {
     this.generateActions(
       'getIdeasSuccess',
@@ -23,4 +23,4 @@ class IdeaActions {
   }
 }
 
-export default alt.createActions(IdeaActions);
+export default alt.createActions(IdeaListActions);

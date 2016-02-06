@@ -1,9 +1,9 @@
 import alt from '../alt';
-import IdeaActions from '../actions/ideaActions';
+import IdeaListActions from '../actions/ideaListActions';
 
-class ideaStore {
+class ideaListStore {
   constructor() {
-    this.bindActions(IdeaActions);
+    this.bindActions(IdeaListActions);
     this.ideas = [];
   }
 
@@ -16,4 +16,4 @@ class ideaStore {
   }
 }
 
-export default alt.createStore(ideaStore);
+export default alt.createStore(ideaListStore);
