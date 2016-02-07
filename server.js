@@ -1,22 +1,32 @@
+require('babel-register');
+
+var path = require('path');
 var express = require('express');
 var bodyParser = require('body-parser');
+var compression = require('compression');
 var mongoose = require('mongoose');
 var morgan = require('morgan');
+var React = require('react');
+var ReactDOM = require('react-dom/server');
+var Router = require('react-router');
+var swig  = require('swig');
 
 var config = require('./config');
+var routes = require('./app/routes');
 var Idea = require('./models/idea');
 
-var app = new express();
+var app = express();
 
 mongoose.connect(config.dbUrl);
 mongoose.connection.on('error', function() {
   console.info('Error: Could not connect to MongoDB');
 });
 
+app.set('port', process.env.PORT || 3000);
+app.use(compression());
 app.use(bodyParser.json());
-app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(__dirname + '/../public/js'));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(function(req, res, next) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
@@ -27,7 +37,9 @@ app.use(function(req, res, next) {
 
 app.use(morgan('dev'));
 
+
 var apiRouter = express.Router();
+
 
 apiRouter.route('/ideas')
 
@@ -100,11 +112,31 @@ apiRouter.route('/ideas')
 			});
 		});
 
-
 app.use('/api', apiRouter);
 
-app.get('/',function(req,res){
-    res.render('./../app/index.ejs',{});
-})
+app.use(function(req, res) {
+  Router.match({ routes: routes.default, location: req.url }, function(err, redirectLocation, renderProps) {
+    if (err) {
+      res.status(500).send(err.message)
+    } else if (redirectLocation) {
+      res.status(302).redirect(redirectLocation.pathname + redirectLocation.search)
+    } else if (renderProps) {
+        var html = ReactDOM.renderToString(React.createElement(Router.RoutingContext, renderProps));
+        var page = swig.renderFile('views/index.html', { html: html });
+        res.status(200).send(page);
+    } else {
+      res.status(404).send('Page Not Found')
+    }
+  });
+});
 
-app.listen(7777);
+app.use(function(err, req, res, next) {
+  console.log(err.stack.red);
+  res.status(err.status || 500);
+  res.send({ message: err.message });
+});
+
+
+app.listen(app.get('port'), function() {
+  console.log('Express server listening on port ' + app.get('port'));
+});

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-export default () => {
+const Header = () => {
   return (
     <ul>
       <li><Link to="/">Home</Link></li>
@@ -9,3 +9,5 @@ export default () => {
     </ul>
   );
 };
+
+export default Header;

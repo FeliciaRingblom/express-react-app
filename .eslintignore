@@ -2,5 +2,7 @@ public
 node_modules
 bower_components
 coverage
-server/
+server.js
+config.js
+models/
 gulpfile.js
