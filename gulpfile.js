@@ -19,7 +19,6 @@ var dependencies = [
   'react-router'
 ];
 
-
 gulp.task('vendor', function() {
   return gulp.src([
     'bower_components/jquery/dist/jquery.js',

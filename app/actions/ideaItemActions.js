@@ -5,7 +5,9 @@ class IdeaItemActions {
   constructor() {
     this.generateActions(
       'getIdeaSuccess',
-      'getIdeaFail'
+      'getIdeaFail',
+      'createIdeaSuccess',
+      'createIdeaFail'
     );
   }
 
@@ -19,6 +21,20 @@ class IdeaItemActions {
       })
       .fail((jqXhr) => {
         this.actions.getIdeaFail(jqXhr);
+      });
+  }
+
+  createIdea(idea) {
+    $.ajax({
+      type: 'POST',
+      url: '../api/ideas/',
+      data: idea
+    })
+      .done((data) => {
+        this.actions.createIdeaSuccess(data);
+      })
+      .fail((jqXhr) => {
+        this.actions.createIdeaFail(jqXhr);
       });
   }
 }

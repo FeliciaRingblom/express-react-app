@@ -43,74 +43,74 @@ var apiRouter = express.Router();
 
 apiRouter.route('/ideas')
 
-		.post(function(req, res){
-			var idea = new Idea();
-		    idea.header = req.body.header;
-	      idea.desc = req.body.desc;
-		    idea.creator = req.body.creator;
-		    idea.location	= req.body.location;
-        idea.points	= req.body.points;
-        idea.labels	= req.body.labels;
+	.post(function(req, res){
+		var idea = new Idea();
+	    idea.header = req.body.header;
+      idea.desc = req.body.desc;
+	    idea.creator = req.body.creator;
+	    idea.location	= req.body.location;
+      idea.points	= req.body.points;
+      idea.labels	= req.body.labels;
 
-		    idea.save(function(err) {
-		    	if (err){
-		    		res.send(err);
-		    	}
-		    	res.json({ message: 'Idea created!' });
-		    });
-		})
+	    idea.save(function(err) {
+	    	if (err){
+	    		res.send(err);
+	    	}
+	    	res.json({ message: 'Idea created!' });
+	    });
+	})
 
-		.get(function(req, res){
-			Idea.find(function(err, ideas){
+	.get(function(req, res){
+		Idea.find(function(err, ideas){
+			if (err){
+				res.send(err);
+			}
+			res.json(ideas);
+		});
+	});
+
+apiRouter.route('/ideas/:idea_id')
+	.get(function(req, res){
+		Idea.findById(req.params.idea_id, function(err, idea){
+			if (err){
+				res.send(err);
+			}
+			res.json(idea);
+		});
+	})
+
+	.put(function(req, res){
+		Idea.findById(req.params.idea_id, function(err, idea){
+			if (err){
+				res.send(err);
+			}
+
+			if(req.body.header) idea.header = req.body.header;
+			if(req.body.desc) idea.desc = req.body.desc;
+			if(req.body.creator) idea.creator = req.body.creator;
+			if(req.body.location) idea.location = req.body.location;
+      if(req.body.points) idea.creator = req.body.points;
+			if(req.body.labels) idea.location = req.body.labels;
+
+			idea.save(function(err){
 				if (err){
 					res.send(err);
 				}
-				res.json(ideas);
+				res.json({message: 'Idea updated!'});
 			});
 		});
+	})
 
-	apiRouter.route('/ideas/:idea_id')
-		.get(function(req, res){
-			Idea.findById(req.params.idea_id, function(err, idea){
-				if (err){
-					res.send(err);
-				}
-				res.json(idea);
-			});
-		})
-
-		.put(function(req, res){
-			Idea.findById(req.params.idea_id, function(err, idea){
-				if (err){
-					res.send(err);
-				}
-
-				if(req.body.header) idea.header = req.body.header;
-				if(req.body.desc) idea.desc = req.body.desc;
-				if(req.body.creator) idea.creator = req.body.creator;
-				if(req.body.location) idea.location = req.body.location;
-        if(req.body.points) idea.creator = req.body.points;
-				if(req.body.labels) idea.location = req.body.labels;
-
-				idea.save(function(err){
-					if (err){
-						res.send(err);
-					}
-					res.json({message: 'Idea updated!'});
-				});
-			});
-		})
-
-		.delete(function(req, res){
-			Idea.remove({
-				_id: req.params.idea_id
-			}, function(err, idea){
-				if(err, idea){
-					return res.send(err);
-				}
-				res.json({message: 'Idea successfully deleted!'});
-			});
+	.delete(function(req, res){
+		Idea.remove({
+			_id: req.params.idea_id
+		}, function(err, idea){
+			if(err, idea){
+				return res.send(err);
+			}
+			res.json({message: 'Idea successfully deleted!'});
 		});
+	});
 
 app.use('/api', apiRouter);
 
